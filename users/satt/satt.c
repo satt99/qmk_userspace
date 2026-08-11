@@ -62,9 +62,9 @@ static bool handle_zkhk_input(uint16_t keycode, keyrecord_t *record) {
                 if (get_mods() & MOD_MASK_CTRL) {
                     tap_code(KC_SPC);
                 } else {
-                    register_mods(MOD_MASK_CTRL);
+                    register_mods(MOD_BIT(KC_LCTL));
                     tap_code(KC_SPC);
-                    unregister_mods(MOD_MASK_CTRL);
+                    unregister_mods(MOD_BIT(KC_LCTL));
                 }
                 break;
             default:
@@ -73,9 +73,9 @@ static bool handle_zkhk_input(uint16_t keycode, keyrecord_t *record) {
                 } else if (get_mods() & MOD_MASK_ALT) {
                     tap_code(KC_GRV);
                 } else {
-                    register_mods(MOD_MASK_ALT);
+                    register_mods(MOD_BIT(KC_LALT));
                     tap_code(KC_GRV);
-                    unregister_mods(MOD_MASK_ALT);
+                    unregister_mods(MOD_BIT(KC_LALT));
                 }
         }
     }

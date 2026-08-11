@@ -11,6 +11,7 @@ const key_override_t rbrc_override = ko_make_with_layers_and_negmods(0, KC_RBRC,
 const key_override_t quot_override = ko_make_with_layers_and_negmods(0, KC_QUOT, JP_QUOT, ~0, MOD_MASK_SHIFT); // : -> '
 const key_override_t eql_override  = ko_make_with_layers_and_negmods(0, KC_EQL,  JP_EQL,  ~0, MOD_MASK_SHIFT); // ^ -> =
 const key_override_t bsls_override = ko_make_with_layers_and_negmods(0, KC_BSLS, JP_YEN,  ~0, MOD_MASK_SHIFT); // ] -> ¥ (Since JP_BSLS does not work on macOS, we use JP_YEN instead)
+const key_override_t grv_override  = ko_make_with_layers_and_negmods(0, KC_GRV,  JP_GRV,  ~0, MOD_MASK_SHIFT); // Zenkaku -> `
 
 // --- Shifted keycode overrides ---
 // comments: (what OS sees without override) -> (what we want)
@@ -60,6 +61,7 @@ const key_override_t *const key_overrides[] = {
     &quot_override,
     &eql_override,
     &bsls_override,
+    &grv_override,
 
     // Shifted
     &sft_2_override,
