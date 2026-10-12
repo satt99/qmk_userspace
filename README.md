@@ -39,6 +39,47 @@ This is a template repository which allows for an external set of QMK keymaps to
 
 Alternatively, if you configured your build targets above, you can use `qmk userspace-compile` to build all of your userspace targets at once.
 
+## EC Type-K keymap diagram
+
+The [printable satt keymap](docs/keymaps/ec-typek-satt-a4.pdf) contains all three
+layers on one A4 portrait page. Print at 100% / actual size. Yellow keys activate
+layers, blue keys change on the selected layer, and gray keys inherit the base
+layer. The diagram shows each layer separately; when both upper layers are active,
+transparent keys fall through from layer 2 to layer 1 to the base layer.
+
+### Regenerate the PDF
+
+Requirements: Python 3.10 or newer, `rsvg-convert` (from librsvg), and a Japanese
+font such as macOS's Hiragino Sans or Noto Sans CJK JP. On macOS:
+
+```sh
+brew install python librsvg
+```
+
+From this repository's root, run:
+
+```sh
+python3 scripts/render_keymap.py
+```
+
+The script reads `keyboards/cipulot/ec_typek/keymaps/satt/keymap.c` from this
+repository and physical key coordinates from
+`../qmk_firmware/keyboards/cipulot/ec_typek/keyboard.json`. If your QMK firmware
+checkout is elsewhere, specify its directory:
+
+```sh
+python3 scripts/render_keymap.py --qmk-dir /path/to/qmk_firmware
+```
+
+The PDF is written to `docs/keymaps/ec-typek-satt-a4.pdf`. SVGs, PNG previews, and
+parsed keymap JSON are also generated there but ignored by Git. Use `--no-png`
+to skip PNG previews while still generating the PDF, or `--output-dir` to change
+the output directory. Without `rsvg-convert`, only SVGs and JSON are generated.
+The script uses only the Python standard library and checks layer/key counts and
+display labels before drawing. If you add an unfamiliar keycode or change a
+custom key's behavior, update the script's display labels and explanatory notes
+as needed, regenerate, and commit the updated PDF with the source changes.
+
 ## Extra info
 
 If you wish to point GitHub actions to a different repository, a different branch, or even a different keymap name, you can modify `.github/workflows/build_binaries.yml` to suit your needs.

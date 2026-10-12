@@ -14,3 +14,8 @@
 compile_commands.json
 .clangd/
 .cache/
+
+# Generated keymap intermediates; the printable PDF is tracked.
+docs/keymaps/ec-typek-satt-*.svg
+docs/keymaps/ec-typek-satt-*.png
+docs/keymaps/ec-typek-satt-data.json
