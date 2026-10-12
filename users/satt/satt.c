@@ -56,28 +56,50 @@ static bool handle_key_override(uint16_t keycode, keyrecord_t *record) {
 static bool handle_zkhk_input(uint16_t keycode, keyrecord_t *record) {
     if (keycode != ZKHK) return false;
     if (record->event.pressed) {
+        const uint8_t saved_mods      = get_mods();
+        const uint8_t saved_weak_mods = get_weak_mods();
+#ifndef NO_ACTION_ONESHOT
+        const uint8_t saved_oneshot_mods = get_oneshot_mods();
+        const uint8_t saved_locked_mods  = get_oneshot_locked_mods();
+#endif
+
+        // This custom key consumes the event before QMK's normal override processing.
+        // Let overrides see the new key to end a held replacement and cancel deferred
+        // trigger registration without changing the enabled state or EEPROM setting.
+        process_key_override(keycode, record);
+
+        clear_mods();
+        clear_weak_mods();
+#ifndef NO_ACTION_ONESHOT
+        clear_oneshot_mods();
+        clear_oneshot_locked_mods();
+#endif
+        send_keyboard_report();
+
         switch (detected_host_os()) {
             case OS_MACOS:
             case OS_IOS:
-                if (get_mods() & MOD_MASK_CTRL) {
-                    tap_code(KC_SPC);
-                } else {
-                    register_mods(MOD_BIT(KC_LCTL));
-                    tap_code(KC_SPC);
-                    unregister_mods(MOD_BIT(KC_LCTL));
-                }
+                register_mods(MOD_BIT(KC_LCTL));
+                tap_code(KC_SPC);
+                unregister_mods(MOD_BIT(KC_LCTL));
                 break;
             default:
-                if (user_config.key_override) {
+                if (key_override_is_enabled()) {
                     tap_code(JP_ZKHK);
-                } else if (get_mods() & MOD_MASK_ALT) {
-                    tap_code(KC_GRV);
                 } else {
                     register_mods(MOD_BIT(KC_LALT));
                     tap_code(KC_GRV);
                     unregister_mods(MOD_BIT(KC_LALT));
                 }
         }
+
+        set_mods(saved_mods);
+        set_weak_mods(saved_weak_mods);
+#ifndef NO_ACTION_ONESHOT
+        set_oneshot_mods(saved_oneshot_mods);
+        set_oneshot_locked_mods(saved_locked_mods);
+#endif
+        send_keyboard_report();
     }
     return true;
 }

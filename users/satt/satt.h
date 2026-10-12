@@ -1,11 +1,6 @@
 #ifndef USERSPACE
 #define USERSPACE
 
-// Tap hold configuration
-#define HOLD_ON_OTHER_KEY_PRESS
-#undef QUICK_TAP_TERM
-#define QUICK_TAP_TERM 100
-
 // Prototypes
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
 
